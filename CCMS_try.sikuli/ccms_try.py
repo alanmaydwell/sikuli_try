@@ -1,10 +1,15 @@
 # for Python v2/v3 compatibility
 from __future__ import print_function
+import time
+# Custom function for reading text from image on screen
+from my_lib import get_text_from_image
 
 browser_path = r"C:\Program Files\Internet Explorer\iexplore.exe"
 initial_url = "https://ccmsebs.uat.legalservices.gov.uk"
 username = "NB_CASEWORKER"
 password = input("Password (will show):")
+case_id = "300001345114"
+
 
 # Open browser
 openApp(browser_path)
@@ -39,9 +44,26 @@ wait("universal_search_top.png", 60)
 
 # Search for case
 click("organization_field.png")
-type("300001345114")
+type(case_id)
 # Note could try keyboard shortcut as alternative to image
 click("search_button.png")
-# Expected result - note not flexible, need dedicated screenshot!
-wait("result_1345114.png", 20)
+# Wait for search results screen
+wait("search_results_window_top.png")
+
+# Also wait for some blue background to show a search result is actually present
+# Otherwise can be too quick and pick up no reference
+wait("search_result_blue_background.png")
+
+
+# Reading reference number returned by search
+# Using offsets to look below the Organization heading and a bit to the right
+# Also home made repeat and delay for sync
+for _ in range(10):
+    found_id = get_text_from_image("organization_heading.png", width=100, xo=20, yo=20)
+    if found_id != "":
+        break
+    else:
+        time.sleep(0.5)
+        
+print("Searched for:", case_id, " Found:", found_id)
 print("Finished!")
