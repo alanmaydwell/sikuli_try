@@ -12,10 +12,12 @@ case_id = "300001345114"
 
 
 # Open browser
+closeApp(browser_path)
 openApp(browser_path)
+
 # Warning - user settings affect (1) cosmetic appearance (2) initial URL displayed
-wait("ie_address.png")
-click("ie_address.png")
+wait("address_bar.png", 10)
+click("address_bar.png")
 
 # Open page - get to address bar by keyboard shortcut (avoids screenshot)
 type("l", Key.CTRL)
@@ -28,6 +30,8 @@ click("username_field.png")
 type(username)
 wait("password_field.png")
 click("password_field.png")
+doubleClick("password_field.png")
+type(Key.DELETE)
 type(password)
 click("login_button.png")
 
