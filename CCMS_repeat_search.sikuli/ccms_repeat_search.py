@@ -1,5 +1,6 @@
 # for Python v2/v3 compatibility
 from __future__ import print_function
+import subprocess
 import time
 # Custom function for reading text from image on screen
 from my_lib import get_text_from_image
@@ -54,10 +55,7 @@ def case_search(case_id):
 
 
 # Open browser
-openApp(browser_path)
-# Warning - user settings affect (1) cosmetic appearance (2) initial URL displayed
-wait("ie_address.png")
-click("ie_address.png")
+browser = subprocess.Popen([browser_path, initial_url])
 
 # Open page - get to address bar by keyboard shortcut (avoids screenshot)
 type("l", Key.CTRL)
@@ -91,5 +89,7 @@ for case_id in case_ids:
     if exists("return_to_search_button.png"):
         click("return_to_search_button.png")
     wait("universal_search_top.png", 60)
-    
+
+# End
+browser.terminate()
 print("Finished!")
