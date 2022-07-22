@@ -1,16 +1,17 @@
 # for Python v2/v3 compatibility
 from __future__ import print_function
+import os
 import subprocess
 import time
 # Custom function for reading text from image on screen
 from my_lib import get_text_from_image
 
 
-browser_path = r"C:\Program Files\Internet Explorer\iexplore.exe"
-initial_url = "https://ccmsebs.uat.legalservices.gov.uk"
-username = "NB_CASEWORKER"
-password = input("Password (will show):")
-case_ids = ["300001345114", "300001345115", "300001345116", "300001345117", "300001345118", "400001345118"]
+def get_file_data(path):
+    with open(data_file, "r") as infile:
+        case_ids = infile.readlines()
+    case_ids = [c.strip() for c in case_ids if c]
+    return case_ids
 
 
 def case_search(case_id):
@@ -54,6 +55,18 @@ def case_search(case_id):
     return found_id
 
 
+
+browser_path = r"C:\Program Files\Internet Explorer\iexplore.exe"
+initial_url = "https://ccmsebs.uat.legalservices.gov.uk"
+username = "NB_CASEWORKER"
+password = input("Password (will show):")
+
+# Read case IDs from file
+test_directory = getBundlePath()
+data_file = os.path.join(test_directory, "case_ids.txt")
+case_ids = get_file_data(data_file)
+
+
 # Open browser
 browser = subprocess.Popen([browser_path, initial_url])
 
@@ -75,7 +88,7 @@ wait("cases_and_clients.png")
 click("cases_and_clients.png")
 
 # Wait for Oracle Forms Launch (allowing 60s)!
-wait("universal_search_top.png", 60)
+wait("universal_search_top.png", 120)
 
 for case_id in case_ids:
     found_id = case_search(case_id)       
