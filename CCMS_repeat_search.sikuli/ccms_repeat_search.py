@@ -57,11 +57,6 @@ def case_search(case_id):
 # Open browser
 browser = subprocess.Popen([browser_path, initial_url])
 
-# Open page - get to address bar by keyboard shortcut (avoids screenshot)
-type("l", Key.CTRL)
-type(initial_url)
-type(Key.ENTER)
-
 # Login to EBS(can be slow to appear, extra wait time added)
 wait("username_field.png", 30)
 click("username_field.png")
