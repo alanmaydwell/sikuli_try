@@ -1,6 +1,7 @@
-# Main Sikuli file doesn't need to import Sikuli but modules do, like below?
+import time
+# Main Sikuli file doesn't need to import Sikuli but modules do as below
 from sikuli.Sikuli import *
-## from sikuli import *
+
 
 def get_text_from_found_image(found_image, width=0, height=0, xo=0, yo=0):
     """
@@ -31,3 +32,21 @@ def get_text_from_image(image, width=0, height=0, xo=0, yo=0):
     found = find(image)
     text = get_text_from_found_image(found, width, height, xo, yo)
     return text
+
+
+def wait_with_pauses(image, pause=1, iterations=10):
+    """
+    Wait for image to be displayed with wait based on a pause
+    interval and number of iterations. Each pause will pause
+    the screen scanning, so should reduce CPU load.
+    
+    Returns True/False depending on whether image found
+    """
+    found = False
+    for _ in range (iterations):
+        if exists(image):
+            found = True
+            break
+        else:
+            time.sleep(pause)
+    return found

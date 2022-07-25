@@ -4,7 +4,7 @@ import os
 import subprocess
 import time
 # Custom function for reading text from image on screen
-from my_lib import get_text_from_image
+from my_lib import get_text_from_image, wait_with_pauses
 
 
 def get_file_data(path):
@@ -88,12 +88,14 @@ wait("cases_and_clients.png")
 click("cases_and_clients.png")
 
 # Wait for Oracle Forms Launch (allowing 60s)!
-wait("universal_search_top.png", 120)
+# wait("universal_search_top.png", 120)
+
+wait_with_pauses("universal_search_top.png", 1, 60)
 
 for case_id in case_ids:
     found_id = case_search(case_id)       
     print("Searched for:", case_id, " Found:", found_id)
-    # Return to search screen
+    # Return to search screen - not needed after failed search
     if exists("return_to_search_button.png"):
         click("return_to_search_button.png")
     wait("universal_search_top.png", 60)
