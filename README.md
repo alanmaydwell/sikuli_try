@@ -20,3 +20,6 @@ Also completes reapeated case searches in CCMS. Also uses screenshots in separat
 
 ### ccms_better_paths.sikuli
 Another one that completes case searches in CCMS and has screenshots in separate directories. This time uses SikuliX's built in image path handling (getImagePath, addImagePath, removeImagePath).
+
+### ccms_modular.sikuli
+Another CCMS script. This one tries to be more modular.
