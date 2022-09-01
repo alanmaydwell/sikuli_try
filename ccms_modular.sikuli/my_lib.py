@@ -62,6 +62,14 @@ class BaseSik(object):
         self.waitclick(image, delay)
         type(text)
 
+    def type_keyboard_shortcut(self, key):
+        type(key, Key.ALT)
+
+    def click_ok(self):
+        self.type_keyboard_shortcut("k")
+
+    def exists(self, image):
+        return exists(image)
 
 
 class SearchSik(BaseSik):

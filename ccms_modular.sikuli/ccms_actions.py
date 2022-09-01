@@ -29,8 +29,29 @@ def ccms_dashboard_set_role_and_access_search():
     dashboard.remove_added_paths()
 
 
-def case_search(case_id):
+def go_to_search_screen():
+    navigate = SearchSik(new_paths=["search_images", "generic_images"])
+    # See if already on search screen
+    if navigate.exists("universal_search_top.png"):
+        # See if "return to search" button present, if so needs to be pressed
+        # so go from search result to search request
+        if navigate.exists("return_to_search_button.png"):
+            navigate.click("return_to_search_button.png")
+    else:
+        navigate.click("torch.png")
+    # Wait for search screen. (organization_filed (sic) is better than universal_search_top
+    # as we universal_search_top is same for both search request and results)
+    navigate.wait("organization_filed_less_ambiguous.png", 10)
+    navigate.remove_added_paths()
+
+
+def case_search(case_id, click_ok=False):
     search = SearchSik(new_paths=["search_images"])
     found_id = search.case_search(case_id)
+    if click_ok:
+        search.click_ok()
+        # Wait for "eBusiness Center" page. Need image not affected by
+        # data values or the intermittent "Choose Role and Group" message
+        search.wait("confirm_new_screeen_after_search_ok")
     search.remove_added_paths()
     return found_id
