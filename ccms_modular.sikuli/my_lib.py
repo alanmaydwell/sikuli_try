@@ -62,6 +62,9 @@ class BaseSik(object):
         self.waitclick(image, delay)
         type(text)
 
+    def type(self, text):
+        type(text)
+
     def type_keyboard_shortcut(self, key):
         type(key, Key.ALT)
 
