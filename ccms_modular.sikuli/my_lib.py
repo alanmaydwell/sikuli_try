@@ -69,6 +69,7 @@ class BaseSik(object):
         type(key, Key.ALT)
 
     def click_ok(self):
+        """Warning -not universal. Sometimes it's alt-O!"""
         self.type_keyboard_shortcut("k")
 
     def exists(self, image):
