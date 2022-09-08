@@ -15,7 +15,7 @@ cwd = os.getcwd()
 setBundlePath(cwd)
 
 # Custom things
-from ccms_actions import ccms_login, ccms_dashboard_set_role_and_access_search, case_search, go_to_search_screen
+from ccms_actions import *
 
 # SikuliX only - "hidden" flag isn't available in standard Python!
 password = input("Password:", hidden=True)
@@ -24,8 +24,9 @@ browser = ccms_login("NB_CASEWORKER", password, "https://ccmsebs.uat.legalservic
 ccms_dashboard_set_role_and_access_search()
 found_id = case_search("300001345114", click_ok=True)
 print("found", found_id)
-
-go_to_search_screen()
+ebusiness_center()
+access_submission_details()
+#go_to_search_screen()
 
 #browser.terminate()
 print("Finished!")

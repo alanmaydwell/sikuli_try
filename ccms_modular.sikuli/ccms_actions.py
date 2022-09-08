@@ -1,6 +1,12 @@
 import subprocess
-
+import time
 from my_lib import BaseSik, SearchSik
+
+"""
+Note there is no direct Sikuli import in this file, so Sikuli standard functions
+are not available here. Access is via the classes imported above.
+Don't try sikuli wait, click, type here
+"""
 
 
 def ccms_login(username, password, url, browser_path=r"C:\Program Files\Internet Explorer\iexplore.exe"):
@@ -52,6 +58,48 @@ def case_search(case_id, click_ok=False):
         search.click_ok()
         # Wait for "eBusiness Center" page. Need image not affected by
         # data values or the intermittent "Choose Role and Group" message
-        search.wait("confirm_new_screeen_after_search_ok")
+        search.wait("confirm_new_screeen_after_search_ok", 30)
     search.remove_added_paths()
     return found_id
+
+
+def ebusiness_center():
+    """Deal with arrival on Ebusiness Center screen"""
+    ebc = BaseSik(new_paths=["ebusiness_center_images"])
+    # Deal with the "Choose Role and Group" message that sometimes appears
+    if ebc.exists("choose_role_and_group_heading.png"):
+        ebc.click("group_field.png")
+        ebc.type("General Administration")
+        # Shortcut for OK button here
+        ebc.type_keyboard_shortcut("o")
+    # Make sure we're on the expected screen (note would be better to check
+    # earlier but the background colour of the heading is affected by
+    # "Choose Role and Group" above as changes window focus)
+    ebc.wait("ebusiness_center_heading(window_selected).png")
+    # Make sure "All" is ticked before doing refresh
+    if ebc.exists("all_box_unticked.png"):
+        ebc.click("all_box_unticked.png")
+        ebc.wait("all_box_ticked.png")
+    ebc.click("refresh_button.png")
+    # No clear way to detect that refresh has completed. Using hard-coded pause
+    time.sleep(4)
+    ebc.remove_added_paths()
+
+
+def access_submission_details():
+    """Access submission details from Ebusiness Center screen with case already
+    accessed and "choose role and group" dealt with"""
+    screen = BaseSik(new_paths=["ebusiness_center_images"])
+    screen.wait("ebusiness_center_heading(window_selected).png")
+    if not screen.exists("submissions_text(selected).png"):
+        screen.click("submissions_text(unselected).png")
+    screen.click("details_button.png")
+    # "Drilldown List - Submissions" should be displayed at this point
+    # Could add something for reading information from the screen
+    pass
+    # There are two "Details" buttons present. The one we want can be accessed
+    # by keyboard shortcut ALT-D
+    screen.type_keyboard_shortcut("d")
+    screen.wait("service_request_title.png", 20)
+    screen.remove_added_paths()
+
